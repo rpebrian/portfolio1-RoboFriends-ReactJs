@@ -17,45 +17,37 @@ class App extends Component{
   }
 
   componentDidMount () {
-    fetch ('http://dummy.restapiexample.com/api/v1/employees')
+    fetch ('http://jsonplaceholder.typicode.com/users')
     .then(respone => respone.json())
     .then(
       users => { 
-        console.log('hasil', users)
-        this.setState({ biodata : users.data }) 
+  
+        this.setState({ biodata : users }) 
       } )
   }
 
   searchRobot = (e) => {
-    console.log('cek',e.target);
     this.setState({ cari : e.target.value })
   }
  
 
   render(){
 
-    const { biodata } = this.state;
-    
-    
-    if (biodata.length) {
-      return(
-        <div className="new">
-                  <h1> Monster Roblox </h1>
-                  <SearchBox 
-                    placeholder ='Mencari data'
-                    handleChange ={ (e) => this.searchRobot(e)}
-                  />
-                  <Cardlist biodata={biodata} />   
-        </div>
+    const { biodata, cari } = this.state;
+    const filterbiodata = biodata.filter(biodata => 
+        biodata.name.toLowerCase().includes(cari.toLowerCase())
       );
-    } else {
-      return(
-        <div></div>
-      )
-      
-    }
 
-    
+    return(
+      <div className="new">
+                <h1> Monster Roblox </h1>
+                <SearchBox 
+                  placeholder ='Mencari data'
+                  handleChange ={ (e) => this.searchRobot(e)}
+                />
+                <Cardlist biodata={filterbiodata} />   
+      </div>
+    );
   }
 
 }
