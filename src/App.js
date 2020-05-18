@@ -17,12 +17,12 @@ class App extends Component{
   }
 
   componentDidMount () {
-    fetch ('http://jsonplaceholder.typicode.com/users')
+    fetch ('http://dummy.restapiexample.com/api/v1/employees')
     .then(respone => respone.json())
     .then(
       users => { 
-  
-        this.setState({ biodata : users }) 
+        console.log('hasil', users)
+        this.setState({ biodata : users.data }) 
       } )
   }
 
@@ -34,21 +34,28 @@ class App extends Component{
 
   render(){
 
-    const { biodata, cari } = this.state;
-    const filterbiodata = biodata.filter(biodata => 
-        biodata.name.toLowerCase().includes(cari.toLowerCase())
+    const { biodata } = this.state;
+    
+    
+    if (biodata.length) {
+      return(
+        <div className="new">
+                  <h1> Monster Roblox </h1>
+                  <SearchBox 
+                    placeholder ='Mencari data'
+                    handleChange ={ (e) => this.searchRobot(e)}
+                  />
+                  <Cardlist biodata={biodata} />   
+        </div>
       );
+    } else {
+      return(
+        <div></div>
+      )
+      
+    }
 
-    return(
-      <div className="new">
-                <h1> Monster Roblox </h1>
-                <SearchBox 
-                  placeholder ='Mencari data'
-                  handleChange ={ (e) => this.searchRobot(e)}
-                />
-                <Cardlist biodata={filterbiodata} />   
-      </div>
-    );
+    
   }
 
 }
